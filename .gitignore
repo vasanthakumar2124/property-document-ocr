@@ -1,0 +1,12 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+*.log
+output/
+outputs/
+*.pdf
+
+document_summary.csv
+page_quality_report.csv
