@@ -1,12 +1,30 @@
+# Python cache and environments
 __pycache__/
 *.py[cod]
 .venv/
 venv/
-.env
-*.log
-output/
-outputs/
-*.pdf
+env/
 
-document_summary.csv
-page_quality_report.csv
+# Environment variables and credentials
+.env
+.env.*
+!.env.example
+*service-account*.json
+credentials.json
+
+# Private input documents and OCR outputs
+Full_Docs/
+output/
+*.pdf
+*_ocr.txt
+*_google_ocr.txt
+*.log
+
+# Generated databases and temporary files
+chroma_db/
+temp/
+tmp/
+
+# IDE files
+.vscode/
+.idea/

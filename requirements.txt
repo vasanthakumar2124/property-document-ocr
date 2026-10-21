@@ -1,3 +1,11 @@
+# Tesseract OCR
 pymupdf>=1.24
 pytesseract>=0.3.13
 Pillow>=10.0
+
+# Google Document AI
+google-cloud-documentai>=2.30.0
+google-api-core>=2.20.0
+
+# PDF processing and batching
+pypdf>=5.0.0

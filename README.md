@@ -1,40 +1,81 @@
-# Improved Property PDF OCR (temporary standalone task)
+# Property Document OCR
 
-This is a separate utility. It does not modify the existing DataFlood project.
+A Python-based OCR project for extracting text from property documents and full-search PDF records using Tesseract OCR and Google Cloud Document AI.
 
-## What changed
-- Renders PDF pages at 350 DPI by default.
-- Uses Tesseract with several page segmentation modes: PSM 3 (automatic layout), PSM 4 (column-oriented text), and PSM 11 (sparse text).
-- Enhances contrast/sharpness and retries low-text or low-confidence pages using a thresholded image.
-- Saves the selected OCR text page-by-page to reduce loss of progress if interrupted.
-- Creates one folder per source PDF with the original PDF copy and a matching `.txt` file.
-- Produces `document_summary.csv` and `page_quality_report.csv` so weak/empty pages can be reviewed.
+## Features
 
-## Important findings from the uploaded ZIP
-The supplied `Example Docs.zip` contains **119 PDFs** (not 108) and **333 total pages**. The script will process all PDFs found directly inside the input folder. If only 108 should be processed, put only those 108 PDFs in the input folder.
+- Extract text from PDF documents using Tesseract OCR.
+- Process PDF documents in batches using Google Document AI.
+- Experiment with Google Document AI's OCR Processor and Form Parser.
+- Check available Document AI processors.
+- Save extracted text for downstream property-document analysis.
 
-## Setup on Windows
-1. Extract `Example Docs.zip` to a folder, for example `C:\\Users\\YourName\\Documents\\Example Docs`.
-2. Open PowerShell in this script folder and install dependencies:
-   `python -m pip install -r requirements.txt`
-3. Run the script with the extracted folder path:
-   `python batch_ocr.py --input-dir "C:\\Users\\YourName\\Documents\\Example Docs"`
-4. The default output folder is `output` beside the script. You can specify another location with `--output-dir "D:\\Property_OCR_Output"`.
+## Project Structure
 
-The script finds Tesseract on PATH first, then checks `C:\\Program Files\\Tesseract-OCR\\tesseract.exe`. Edit `DEFAULT_TESSERACT` at the top of `batch_ocr.py` if needed.
-
-## Output layout
-```
-output/
-  111177/
-    111177.pdf
-    111177.txt
-  1369366/
-    1369366.pdf
-    1369366.txt
-  document_summary.csv
-  page_quality_report.csv
+```text
+property-document-ocr/
+├── src/
+│   ├── batch_ocr.py
+│   ├── check_processors.py
+│   ├── test_form_parser.py
+│   └── test_google_ocr.py
+├── .gitignore
+├── README.md
+└── requirements.txt
 ```
 
-## Limitations
-OCR cannot guarantee correctness on faint scans, handwritten notes, stamps, seals, tiny text, or skewed pages. A page marked `success` only means some text was returned. Review low-confidence/empty pages and compare important property fields against the source PDF. The multi-pass selection improves coverage but cannot guarantee that every field is captured.
+Input PDFs, extracted OCR text, and generated output files are excluded from version control because property records may contain sensitive information.
+
+## Requirements
+
+- Python 3.12 or a compatible Python version
+- Tesseract OCR (for Tesseract-based processing)
+- Google Cloud project with the Document AI API enabled (for Google OCR and Form Parser)
+
+## Installation
+
+Clone the repository:
+
+```bash
+git clone https://github.com/vasanthakumar2124/property-document-ocr.git
+cd property-document-ocr
+```
+
+Create and activate a virtual environment:
+
+```powershell
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+```
+
+Install Python dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+## Google Cloud Setup
+
+For Google Document AI scripts:
+
+1. Create or select a Google Cloud project.
+2. Enable the Document AI API.
+3. Create the required OCR Processor or Form Parser processor.
+4. Configure Application Default Credentials.
+5. Update project, region, and processor settings in the relevant script or configure them through environment variables.
+
+Never commit API keys, service-account credentials, or private property documents.
+
+## Usage
+
+Run the relevant script from the repository root, for example:
+
+```bash
+python src/check_processors.py
+```
+
+Refer to each script's configuration before running OCR or Form Parser processing. Input paths, processor IDs, and Google Cloud settings may need to be configured for your environment.
+
+## Notes
+
+This repository is intended for OCR experimentation and property-document text extraction. OCR output can contain errors, especially in handwritten text, tables, legal descriptions, and scanned records. Verify important names, dates, recording references, and property details against the original document.
